@@ -11,12 +11,18 @@ import com.omnius.tms.model.Task;
 @Service
 public class KafkaProducer {
 
+    /** The Constant logger. */
     private static final Logger logger = LoggerFactory.getLogger(KafkaProducer.class);
     private static final String TOPIC = "users";
 
+    /** The kafka template. */
     @Autowired
     private KafkaTemplate<String, Task> kafkaTemplate;
 
+    /** Send message.
+     *
+     * @param task
+     *            the task */
     public void sendMessage(Task task) {
         logger.info(String.format("#### -> Producing message -> %s", task));
         this.kafkaTemplate.send(TOPIC, task);

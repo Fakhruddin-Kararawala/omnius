@@ -1,5 +1,6 @@
 package com.omnius.tms.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -22,13 +24,18 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Table(name = "task")
 @EntityListeners(AuditingEntityListener.class)
-public class Task {
+public class Task implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1207805382449881579L;
 
     /** The id. */
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
+    @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID id;
 
     /** The created at. Auto populated through JPA Auditing */
