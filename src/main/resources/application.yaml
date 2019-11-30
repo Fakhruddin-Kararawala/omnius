@@ -12,10 +12,12 @@ spring:
             bootstrap-servers: kafka:9092
             key-serializer: org.apache.kafka.common.serialization.StringSerializer
             value-serializer: com.omnius.tms.config.TaskSerializer
+        topic:
+            task
     jpa:
         show-sql: true
         hibernate:
-          ddl-auto: update
+          ddl-auto: create
         properties:
           hibernate.jdbc.batch_size: 20
           hibernate.cache.use_query_cache: false

@@ -25,7 +25,7 @@ public class KafkaConsumer {
      *
      * @param task
      *            the task */
-    @KafkaListener(topics = "users", groupId = "group_id")
+    @KafkaListener(topics = "#{'${spring.kafka.topic}'}", groupId = "group_id")
     public void consume(Task task) {
         logger.info(String.format("#### -> Consumed message -> %s", task));
         repository.save(task);

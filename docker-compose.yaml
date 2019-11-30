@@ -1,4 +1,4 @@
-version: '3'
+version: '2.1'
 services:
 
   zookeeper:
@@ -15,7 +15,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "users:1:1:compact"
+      KAFKA_CREATE_TOPICS: "task:1:1"
     depends_on:
       - zookeeper
     command: [start-kafka.sh]
@@ -26,6 +26,10 @@ services:
      - "3306:3306"
    environment:
      - MYSQL_ROOT_PASSWORD=root
+   healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
   
   tms:
         build:
@@ -34,6 +38,10 @@ services:
         image: tms
         ports:
             - "9000:9000"
+        depends_on:
+           mysqldb:
+               condition: service_healthy
         links:
            - mysqldb
            - kafka
+        restart: on-failure
